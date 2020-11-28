@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .bgc_red {
+        background: red;
+      }
+    </style>
+  </head>
+
+  <body>
+    <input id="bpm" type="text" value="120">
+    <input type="button" id="bpm_set_btn" value="BPM Set">
+    <p id="bpmP">BPM は <span id="bpm_display">120</span> です。</p>
+
+    <table>
+      <tbody>
+        <tr id="steps">
+          <th></th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+          <th>4</th>
+          <th>5</th>
+          <th>6</th>
+          <th>7</th>
+          <th>8</th>
+          <th>9</th>
+          <th>10</th>
+          <th>11</th>
+          <th>12</th>
+          <th>13</th>
+          <th>14</th>
+          <th>15</th>
+          <th>16</th>
+        </tr>
+        <tr id="soundHh">
+          <td>HH</td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+        </tr>
+        <tr id="soundSn">
+          <td>SN</td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+        </tr>
+        <tr id="soundKick">
+          <td>Kick</td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+          <td><input type="checkbox"></td>
+          <td><input type="checkbox" checked="checked"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 10px; font-size: 18px;">
+      <span id="start">[ start ]</span> <span id="stop">[ stop ]</span>
+    </div>
+
+
+    <!-- 音声ファイルの読み込み 9〜10行目にURLを指定 -->
+    <audio id="cl_hihat" preload="auto">
+      <source src="sounds/cl_hihat.mp3" type="audio/mp3">
+    </audio>
+    <audio id="snare" preload="auto">
+      <source src="sounds/snare.mp3" type="audio/mp3">
+    </audio>
+    <audio id="kick1" preload="auto">
+      <source src="sounds/kick1.mp3" type="audio/mp3">
+    </audio>
+
+
+    <script>
+
+
+
+
+      // sounds
+      function cl_hihat() {
+        const snare = document.getElementById('cl_hihat');
+        if (typeof (cl_hihat.currentTime) != 'undefined') {
+          cl_hihat.currentTime = 0;
+        }
+        snare.play();
+      }
+      function snare() {
+        const snare = document.getElementById('snare');
+        if (typeof (snare.currentTime) != 'undefined') {
+          snare.currentTime = 0;
+        }
+        snare.play();
+      }
+      function kick1() {
+        const kick1 = document.getElementById('kick1');
+        if (typeof (kick1.currentTime) != 'undefined') {
+          kick1.currentTime = 0;
+        }
+        kick1.play();
+      }
+      // /sounds
+
+
+    </script>
+
+    <!-- <script src="script.js"></script> -->
+    <script>
+      const stepNumber = document.getElementById('steps').getElementsByTagName('th')
+      const soundHh = document.getElementById('soundHh').getElementsByTagName('td')
+      const soundSn = document.getElementById('soundSn').getElementsByTagName('td')
+      const soundKick = document.getElementById('soundKick').getElementsByTagName('td')
+      // const stepNumber = document.getElementsByClassName('step-number')
+      // const stepNumber = document.getElementsByClassName('soundHH')
+      const toggle = document.getElementsByClassName('toggle')
+      let steps = 16;
+
+      console.log(stepNumber[3].innerText);
+      const inputs = document.getElementsByTagName('input');
+      console.log(inputs[18].checked);
+
+      function firstStep() {
+        stepNumber[1].classList.add('bgc_red');
+        soundHh[1].classList.add('bgc_red');
+        soundSn[1].classList.add('bgc_red');
+        soundKick[1].classList.add('bgc_red');
+        if (soundHh[1].getElementsByTagName('input')[0].checked) {
+          cl_hihat();
+        }
+        if (soundSn[1].getElementsByTagName('input')[0].checked) {
+          snare();
+        }
+        if (soundKick[1].getElementsByTagName('input')[0].checked) {
+          kick1();
+        }
+
+        sequence();
+
+      }
+
+      let i = 0;
+      let timerId;
+      let isRunning = false;
+      let bpm = 500;
+
+      const newP = document.createElement('p');
+      function inputError() {
+        const newContent = document.createTextNode('数値のみ入力してください');
+        newP.appendChild(newContent);
+        const currentP = document.getElementById('bpmP');
+        document.body.insertBefore(newP, currentP);
+        stop();
+
+      }
+
+
+
+
+      function bpm_set() {
+        newP.remove();
+        let bpm_input = document.getElementById("bpm").value;
+        if (isNaN(bpm_input)) {
+          inputError();
+
+
+
+        }
+        bpm = 60000 / parseInt(bpm_input);
+        document.getElementById("bpm_display").innerText = bpm_input;
+      }
+      document.getElementById("bpm_set_btn").onclick = bpm_set;
+
+      function sequence() {
+        timerId = setTimeout(function () {
+          stepNumber[i % steps + 1].classList.remove('bgc_red');
+          soundHh[i % steps + 1].classList.remove('bgc_red');
+          soundSn[i % steps + 1].classList.remove('bgc_red');
+          soundKick[i % steps + 1].classList.remove('bgc_red');
+          i++;
+          stepNumber[i % steps + 1].classList.add('bgc_red');
+          soundHh[i % steps + 1].classList.add('bgc_red');
+          soundSn[i % steps + 1].classList.add('bgc_red');
+          soundKick[i % steps + 1].classList.add('bgc_red');
+          console.log(soundKick[i % steps + 1].getElementsByTagName('input')[0]);
+          if (soundHh[i % steps + 1].getElementsByTagName('input')[0].checked) {
+            cl_hihat();
+          }
+          if (soundSn[i % steps + 1].getElementsByTagName('input')[0].checked) {
+            snare();
+          }
+          if (soundKick[i % steps + 1].getElementsByTagName('input')[0].checked) {
+            kick1();
+          }
+          sequence();
+        }, bpm / 4);
+      }
+
+      function start() {
+        if (isRunning === false) {
+          firstStep();
+          isRunning = true;
+        }
+      }
+      document.getElementById('start').onclick = start;
+
+      function stop() {
+        clearTimeout(timerId);
+        stepNumber[i % steps + 1].classList.remove('bgc_red');
+        soundHh[i % steps + 1].classList.remove('bgc_red');
+        soundSn[i % steps + 1].classList.remove('bgc_red');
+        soundKick[i % steps + 1].classList.remove('bgc_red');
+        isRunning = false;
+        i = 0;
+      }
+      document.getElementById('stop').onclick = stop;
+
+
+    </script>
+
+  </body>
+
+</html>
